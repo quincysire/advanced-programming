@@ -5,26 +5,34 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 
 public class DepositTransaction extends BaseTransaction {
-    public DepositTransaction(int amount, @NotNull Calendar date){
+    public DepositTransaction(double amount, @NotNull Calendar date) {
         super(amount, date);
     }
-    private boolean checkDepositAmount(int amt){
-        if (amt < 0){
-           return false;
-        }
-        else{
-            return  true;
-        }
+
+    private boolean checkDepositAmount(double amt) {
+        return amt >= 0;
     }
 
-    // Method to print a transaction receipt or details
-    public void printTransactionDetails(){
-        System.out.println("Deposit Trasaction: "+this.toString());
+    @Override
+    public void app() {
+        System.out.println("Deposit Transaction executed!");
     }
 
-    public void apply(BankAccount ba){
-        double curr_balance = ba.getBalance();
-        double new_balance = curr_balance + getAmount();
-        ba.setBalance(new_balance);
+    @Override
+    public void apply(BankAccount ba) {
+        if (!checkDepositAmount(getAmount())) {
+            System.out.println("Invalid deposit amount.");
+            return;
+        }
+
+        double currentBalance = ba.getBalance();
+        ba.setBalance(currentBalance + getAmount());
+        System.out.println("Deposit of " + getAmount() + " applied successfully.");
+    }
+
+    @Override
+    public void printTransactionDetails() {
+        System.out.println("Deposit Transaction Details:");
+        super.printTransactionDetails();
     }
 }
