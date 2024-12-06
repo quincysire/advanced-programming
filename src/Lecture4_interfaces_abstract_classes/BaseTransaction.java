@@ -59,8 +59,4 @@ public class BaseTransaction {
         System.out.println("Amount: " + amount);
         System.out.println("Date: " + date.getTime());
     }
-
-    public void apply(BankAccount ba) {
-        System.out.println("Applying default transaction...");
-    }
 }
