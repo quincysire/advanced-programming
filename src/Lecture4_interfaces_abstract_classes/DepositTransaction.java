@@ -22,7 +22,10 @@ public class DepositTransaction extends BaseTransaction {
     }
 
     private boolean checkDepositAmount(double amt) {
-        return amt >= 0;
+        if (amt < 0) {
+            throw new IllegalArgumentException("Deposit amount cannot be negative.");
+        }
+        return true;
     }
 
     @Override
@@ -32,14 +35,11 @@ public class DepositTransaction extends BaseTransaction {
 
     @Override
     public void apply(BankAccount ba) {
-        if (!checkDepositAmount(getAmount())) {
-            System.out.println("Invalid deposit amount.");
-            return;
+        if (checkDepositAmount(getAmount())) {
+            double currentBalance = ba.getBalance();
+            ba.setBalance(currentBalance + getAmount());
+            System.out.println("Deposit of " + getAmount() + " applied successfully.");
         }
-
-        double currentBalance = ba.getBalance();
-        ba.setBalance(currentBalance + getAmount());
-        System.out.println("Deposit of " + getAmount() + " applied successfully.");
     }
 
     @Override

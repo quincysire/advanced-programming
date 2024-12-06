@@ -24,7 +24,10 @@ public class WithdrawalTransaction extends BaseTransaction {
     }
 
     private boolean checkWithdrawalAmount(double amt) {
-        return amt >= 0;
+        if (amt < 0) {
+            throw new IllegalArgumentException("Withdrawal amount cannot be negative.");
+        }
+        return true;
     }
 
     @Override
@@ -34,17 +37,14 @@ public class WithdrawalTransaction extends BaseTransaction {
 
     @Override
     public void apply(BankAccount ba) {
-        if (!checkWithdrawalAmount(getAmount())) {
-            System.out.println("Invalid withdrawal amount.");
-            return;
-        }
-
-        double currentBalance = ba.getBalance();
-        if (currentBalance >= getAmount()) {
-            ba.setBalance(currentBalance - getAmount());
-            System.out.println("Withdrawal of " + getAmount() + " applied successfully.");
-        } else {
-            System.out.println("Insufficient funds for withdrawal.");
+        if (checkWithdrawalAmount(getAmount())) {
+            double currentBalance = ba.getBalance();
+            if (currentBalance >= getAmount()) {
+                ba.setBalance(currentBalance - getAmount());
+                System.out.println("Withdrawal of " + getAmount() + " applied successfully.");
+            } else {
+                System.out.println("Insufficient funds for withdrawal.");
+            }
         }
     }
 
