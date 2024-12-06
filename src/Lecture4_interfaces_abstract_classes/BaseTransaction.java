@@ -1,62 +1,62 @@
 package Lecture4_interfaces_abstract_classes;
 
 import org.jetbrains.annotations.NotNull;
-
 import java.util.Calendar;
 
-public abstract class BaseTransaction implements TransactionInterface {
+/**
+ * BaseTransaction class to represent a general financial transaction.
+ * The transaction contains details such as amount, date, and a generated transaction ID.
+ * This class is intended to be extended by other transaction types.
+ *
+ * @param amount - The amount of the transaction (must be positive).
+ * @param date - The date the transaction occurred (cannot be null).
+ *
+ * @return String - The generated unique transaction ID.
+ *
+ * @throws NullPointerException - if the date parameter is null.
+ * @see DepositTransaction
+ * @see WithdrawalTransaction
+ * @author Quincy Sire
+ */
+public class BaseTransaction {
     private final double amount;
     private final Calendar date;
     private final String transactionID;
 
-    /**
-     * Lecture1_adt.TransactionInterface Constructor
-     * @param amount in an integer
-     * @param date: Not null, and must be a Calendar object
-     * @return void
-     * Instialises the field, attributes of a transaction
-     * Creates a object of this
-     */
-    public BaseTransaction(double amount, @NotNull Calendar date)  {
+    public BaseTransaction(double amount, @NotNull Calendar date) {
+        if (date == null) {
+            throw new NullPointerException("Date cannot be null.");
+        }
         this.amount = amount;
-        this.date = (Calendar) date.clone();//defensive copy of date
+        this.date = (Calendar) date.clone(); // Defensive copy
         this.transactionID = generateTransactionID(date);
     }
-    /**
-     * Generates a unique transaction ID based on the date and a random value
-     * @param date: The transaction date to be used for ID generation
-     * @return A unique transaction ID string
-     */
+
     private String generateTransactionID(Calendar date) {
         int uniq = (int) (Math.random() * 10000);
-        return date.getTime().toString() + "-" + uniq; // Combine date string and random number
+        return date.getTime().toString() + "-" + uniq;
     }
 
-    /**
-     * Gets the transaction amount
-     * @return The transaction amount as double
-     */
     public double getAmount() {
         return amount;
     }
 
-    /**
-     * Gets the transaction date
-     * @return A defensive copy of the transaction date
-     */
     public Calendar getDate() {
-        return (Calendar) date.clone(); // Defensive copying to avoid external modification
+        return (Calendar) date.clone(); // Defensive copy
     }
 
-    /**
-     * Gets the unique transaction ID
-     * @return The transaction ID string
-     */
     public String getTransactionID() {
         return transactionID;
     }
 
-    // Abstract methods that must be implemented by subclasses
-    public abstract void printTransactionDetails();
-    public abstract void apply(BankAccount ba);
+    // Default implementation
+    public void app() {
+        System.out.println("Default transaction behavior in BaseTransaction");
+    }
+
+    public void printTransactionDetails() {
+        System.out.println("Transaction ID: " + transactionID);
+        System.out.println("Amount: " + amount);
+        System.out.println("Date: " + date.getTime());
+    }
 }

@@ -129,34 +129,46 @@ public class Main {
     }
     // New method to test Withdrawal and Reversal Transactions with BankAccount
     public static void testWithdrawalAndReversal() {
-        // Create a BankAccount with an initial balance of 5000
+        // Create a BankAccount with an initial balance
         BankAccount bankAccount = new BankAccount(5000);
-        bankAccount.printBalance(); // Initial balance
+        bankAccount.printBalance();
 
-        // Create a WithdrawalTransaction of 1000
+        // Apply standard withdrawal
         Calendar d1 = new GregorianCalendar();
-        WithdrawalTransaction withdrawal = new WithdrawalTransaction(1000, d1);
+        WithdrawalTransaction standardWithdrawal = new WithdrawalTransaction(1000, d1);
+        standardWithdrawal.apply(bankAccount, "Standard Withdrawal");
+        System.out.println("\nAfter Standard Withdrawal:");
+        bankAccount.printBalance();
 
-        // Apply the withdrawal to the account
-        bankAccount.applyTransaction(withdrawal);
-        System.out.println("\nAfter Withdrawal:");
-        bankAccount.printBalance(); // Balance after withdrawal
+        // Apply ATM withdrawal
+        WithdrawalTransaction atmWithdrawal = new WithdrawalTransaction(500, d1);
+        atmWithdrawal.apply(bankAccount, "ATM Withdrawal");
+        System.out.println("\nAfter ATM Withdrawal:");
+        bankAccount.printBalance();
 
-        // Create a reversal of the withdrawal transaction
-        ReversalTransaction reversal = withdrawal.reverse(bankAccount);
+        // Apply online withdrawal
+        WithdrawalTransaction onlineWithdrawal = new WithdrawalTransaction(200, d1);
+        onlineWithdrawal.apply(bankAccount, "Online Withdrawal");
+        System.out.println("\nAfter Online Withdrawal:");
+        bankAccount.printBalance();
 
-        // Apply the reversal transaction to the account
+        // Reverse the standard withdrawal
+        ReversalTransaction reversal = standardWithdrawal.reverse(bankAccount);
         bankAccount.applyTransaction(reversal);
         System.out.println("\nAfter Reversal:");
-        bankAccount.printBalance(); // Balance after reversal
+        bankAccount.printBalance();
     }
 
+    public static void main(String[] args) {
+        testWithdrawalAndReversal();
+    }
+}
 
     public static void main(String[] args) {
         // This is the client code
         // Uncomment the following lines to test the class which you would like to test
 
-         //testTransaction1()
+        //testTransaction1();
         // testTransaction2()
         // testTransaction3()
         // testTransaction4()

@@ -3,11 +3,24 @@ package Lecture4_interfaces_abstract_classes;
 import org.jetbrains.annotations.NotNull;
 import java.util.Calendar;
 
+/**
+ * ReversalTransaction class extends BaseTransaction to reverse a previous transaction.
+ * It allows the reversal of both deposit and withdrawal transactions.
+ *
+ * @param amount - The amount to be reversed (must be positive).
+ * @param date - The date the reversal occurred (cannot be null).
+ *
+ * @return void - Applies the reversal to the bank account.
+ *
+ * @throws IllegalArgumentException - if the reversal amount is invalid.
+ * @see BaseTransaction
+ * @see WithdrawalTransaction
+ * @author Quincy Sire
+ */
 public class ReversalTransaction extends BaseTransaction {
 
     private boolean isReversed = true;
 
-    // Change the constructor to accept a double amount
     public ReversalTransaction(double amount, @NotNull Calendar date) {
         super(amount, date);
     }
