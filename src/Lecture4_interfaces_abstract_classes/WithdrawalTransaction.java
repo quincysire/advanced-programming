@@ -18,18 +18,24 @@ public class WithdrawalTransaction extends BaseTransaction {
     }
 
     // Method to reverse the transaction
-    public boolean reverse() {
-        return true;
-    } // return true if reversal was successful
+    public boolean reverse(BankAccount ba) {
+        if (ba != null) {
+            double newBalance = ba.getBalance() + getAmount();
+            ba.setBalance(newBalance);
+            System.out.println("Transaction reversed: " + this.toString());
+            return true; // Reversal successful
+        }
+        return false; // Reversal failed
+    }
 
     // Method to print a transaction receipt or details
     public void printTransactionDetails() {
-        System.out.println("Deposit Trasaction: " + this.toString());
+        System.out.println("Withdrawal Transaction: " + this.toString());
     }
 
     /*
-    Oportunity for assignment: implementing different form of withdrawal
-     */
+    Opportunity for assignment: implementing different form of withdrawal
+    */
     public void apply(BankAccount ba) {
         double curr_balance = ba.getBalance();
         if (curr_balance > getAmount()) {
@@ -37,9 +43,4 @@ public class WithdrawalTransaction extends BaseTransaction {
             ba.setBalance(new_balance);
         }
     }
-
-    /*
-    Assignment 1 Q3: Write the Reverse method - a method unique to the WithdrawalTransaction Class
-     */
 }
-
