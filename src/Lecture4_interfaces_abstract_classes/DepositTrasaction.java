@@ -18,10 +18,12 @@ class DepositTransaction extends BaseTransaction {
     /**
      * Check if the deposit amount is valid (positive amount)
      * @param amt The amount to be deposited
-     * @return boolean Returns true if the deposit amount is valid (greater than or equal to zero), false otherwise
+     * @throws InvalidDepositAmountException if the deposit amount is negative
      */
-    private boolean checkDepositAmount(double amt){
-        return amt >= 0;
+    private void checkDepositAmount(double amt) throws InvalidDepositAmountException {
+        if (amt < 0) {
+            throw new InvalidDepositAmountException("Deposit amount cannot be negative: " + amt);
+        }
     }
 
     /**
@@ -38,12 +40,17 @@ class DepositTransaction extends BaseTransaction {
      */
     @Override
     public void apply(BankAccount ba){
-        if (checkDepositAmount(getAmount())) {
+        try {
+            // Check if the deposit amount is valid
+            checkDepositAmount(getAmount());
+
+            // If valid, apply the transaction
             double currentBalance = ba.getBalance();
             double newBalance = currentBalance + getAmount();
             ba.setBalance(newBalance);
-        } else {
-            System.out.println("Invalid deposit amount.");
+        } catch (InvalidDepositAmountException e) {
+            // Handle the exception if deposit amount is invalid
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
