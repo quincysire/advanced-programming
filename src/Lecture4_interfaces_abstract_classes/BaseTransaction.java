@@ -3,49 +3,59 @@ package Lecture4_interfaces_abstract_classes;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 public abstract class BaseTransaction implements TransactionInterface {
-    private final int amount;
+    private final double amount;  // Changed to double for better precision with monetary values
     private final Calendar date;
     private final String transactionID;
 
     /**
      * Lecture1_adt.TransactionInterface Constructor
-     * @param amount in an integer
+     * @param amount in a double (representing the transaction amount)
      * @param date: Not null, and must be a Calendar object
      * @return void
-     * Instialises the field, attributes of a transaction
-     * Creates a object of this
+     * Initializes the fields and attributes of a transaction
+     * Creates an object of this
      */
-    public BaseTransaction(int amount, @NotNull Calendar date)  {
+    public BaseTransaction(double amount, @NotNull Calendar date)  {
         this.amount = amount;
         this.date = (Calendar) date.clone();
-        int uniq = (int) Math.random()*10000;
-        transactionID = date.toString()+uniq;
+        this.transactionID = UUID.randomUUID().toString();  // Use UUID for unique transaction ID
     }
 
     /**
      * getAmount()
-     * @return integer
+     * @return double
      */
     public double getAmount() {
-        return amount; // Because we are dealing with Value types we need not worry about what we return
+        return amount; // Return the amount as a double for monetary values
     }
 
     /**
      * getDate()
-     * @return Calendar Object
+     * @return Calendar object
      */
     public Calendar getDate() {
-//        return date;    // Because we are dealing with Reference types we need to judiciously copy what our getters return
-        return (Calendar) date.clone(); // Defensive copying or Judicious Copying
+        return (Calendar) date.clone();  // Defensive copying to prevent external modifications
     }
 
-    // Method to get a unique identifier for the transaction
-    public String getTransactionID(){
-        return  transactionID;
+    /**
+     * getTransactionID()
+     * @return String
+     */
+    public String getTransactionID() {
+        return transactionID;  // Return the unique transaction ID
     }
-    // Method to print a transaction receipt or details
+
+    /**
+     * Abstract method to print transaction details
+     */
     public abstract void printTransactionDetails();
+
+    /**
+     * Abstract method to apply the transaction to a bank account
+     * @param ba BankAccount object to apply the transaction to
+     */
     public abstract void apply(BankAccount ba);
 }

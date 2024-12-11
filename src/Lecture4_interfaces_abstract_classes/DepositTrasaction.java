@@ -4,27 +4,46 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 
-public class DepositTrasaction extends BaseTransaction {
-    public DepositTrasaction(int amount, @NotNull Calendar date){
+class DepositTransaction extends BaseTransaction {
+
+    /**
+     * Constructor for DepositTransaction
+     * @param amount The amount to be deposited
+     * @param date The date of the transaction (must not be null)
+     */
+    public DepositTransaction(double amount, @NotNull Calendar date){
         super(amount, date);
     }
-    private boolean checkDepositAmount(int amt){
-        if (amt < 0){
-           return false;
-        }
-        else{
-            return  true;
-        }
+
+    /**
+     * Check if the deposit amount is valid (positive amount)
+     * @param amt The amount to be deposited
+     * @return boolean Returns true if the deposit amount is valid (greater than or equal to zero), false otherwise
+     */
+    private boolean checkDepositAmount(double amt){
+        return amt >= 0;
     }
 
-    // Method to print a transaction receipt or details
+    /**
+     * Print the transaction details
+     */
+    @Override
     public void printTransactionDetails(){
-        System.out.println("Deposit Trasaction: "+this.toString());
+        System.out.println("Deposit Transaction: " + this.toString());
     }
 
+    /**
+     * Apply the deposit transaction to a BankAccount
+     * @param ba The BankAccount object to apply the deposit to
+     */
+    @Override
     public void apply(BankAccount ba){
-        double curr_balance = ba.getBalance();
-        double new_balance = curr_balance + getAmount();
-        ba.setBalance(new_balance);
+        if (checkDepositAmount(getAmount())) {
+            double currentBalance = ba.getBalance();
+            double newBalance = currentBalance + getAmount();
+            ba.setBalance(newBalance);
+        } else {
+            System.out.println("Invalid deposit amount.");
+        }
     }
 }
